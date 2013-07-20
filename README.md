@@ -14,5 +14,5 @@ user to your tomcat-users.xml file:
 &lt;/tomcat-users&gt;
 </code></pre>
 
-After you've done all this you can simply go to the url yourserver.com/locsy/settings.html and add new users to your
+After you've done all this you can simply go to the url yourserver.com/locsy/settings.xhtml and add new users to your
 Locsy installation.
