@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+
+
+
+
+           http://www.springframework.org/schema/context
+		   http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		   http://www.springframework.org/schema/data/mongo
+           http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd"
+        >
+
+    <context:component-scan base-package="com.lovbomobile.locsy"/>
+
+    <mongo:mongo host="localhost"></mongo:mongo>
+    <mongo:db-factory id="mongoDbFactory" dbname="locsy"/>
+
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+    </bean>
+
+    <bean id="userDao" class="com.lovbomobile.locsy.daos.impl.MongoUserDao">
+        <property name="mongoOperations" ref="mongoTemplate"></property>
+    </bean>
+
+
+    <bean id="locationInfoService" class="com.lovbomobile.locsy.services.impl.LocationInfoServiceImpl">
+        <property name="userDao" ref="userDao"></property>
+    </bean>
+
+    <bean id="LocationRESTRequestProcessor" class="com.lovbomobile.locsy.rest.LocationRESTRequestProcessor">
+        <property name="userDao" ref="userDao"></property>
+        <property name="locationInfoService" ref="locationInfoService"></property>
+        <property name="securityService" ref="securityService"></property>
+    </bean>
+
+    <bean id="securityService" class="com.lovbomobile.locsy.services.impl.SimpleSecurityService">
+        <property name="userDao" ref="userDao"></property>
+    </bean>
+
+    <!-- Page Controller -->
+    <bean id="settingsPageController" class="com.lovbomobile.locsy.pageController.SettingsPageController">
+        <property name="userDao" ref="userDao"></property>
+        <property name="adminContext" ref="adminContext"></property>
+    </bean>
+
+    <bean id="friendsPageController" class="com.lovbomobile.locsy.pageController.FriendsPageController">
+        <property name="adminContext" ref="adminContext"></property>
+        <property name="userDao" ref="userDao"></property>
+    </bean>
+
+    <bean id="adminContext" class="com.lovbomobile.locsy.pageController.AdminContext"></bean>
+
+</beans>

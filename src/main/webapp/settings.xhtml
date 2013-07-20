@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:t="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+    <title>Your personal latitude service</title>
+    <link href="css/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="css/settings.css" rel="stylesheet"/>
+</h:head>
+<h:body>
+    <div class="container">
+        <div class="row">
+            <div class="span11">
+                <h2>Welcome to your personal latitude service</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span9">
+                <h3>Manage Users</h3>
+            </div>
+        </div>
+        <h:form>
+            <div class="row">
+                <div class="span4">
+                    <h:outputLabel value="You have #{settingsPageController.numberOfUsers} registered users."/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span3">
+                    <h:inputText value="#{settingsPageController.enteredUserID}" bootstrapRequired="true">
+
+                    </h:inputText>
+                </div>
+                <div class="span3">
+                    <h:inputSecret value="#{settingsPageController.enteredUserPassword}"
+                                   bootstrapRequired="true"></h:inputSecret>
+                </div>
+                <div class="span3">
+                    <h:commandButton value="Add new user" action="#{settingsPageController.addNewUserButtonClicked}"
+
+                                     styleClass="btn btn-primary"></h:commandButton>
+                </div>
+            </div>
+        </h:form>
+        <h:form>
+            <div class="row">
+                <div class="span11">
+                    <t:dataTable value="#{settingsPageController.allUsers}" var="user" styleClass="table table-striped">
+                        <h:column>
+                            <f:facet name="header">User ID</f:facet>
+                            #{user.userID}</h:column>
+
+                        <h:column>
+                            <f:facet name="header">latitude</f:facet>
+                            #{user.location.latitude}</h:column>
+
+                        <h:column>
+                            <f:facet name="header">longitude</f:facet>
+                            #{user.location.longitude}</h:column>
+
+
+                        <h:column>
+                            <f:facet name="header">accuracy</f:facet>
+                            #{user.location.accuracy}</h:column>
+
+
+
+                        <h:column>
+                            <f:facet name="header">server time</f:facet>
+                            #{settingsPageController.formatTime(user.location.serverTime)}</h:column>
+
+                        <h:column>
+                            <f:facet name="header">client time</f:facet>
+                            #{settingsPageController.formatTime(user.location.clientTime)}</h:column>
+
+
+                        <h:column>
+
+                            <h:commandLink value="edit"
+                                           action="#{settingsPageController.editFriendsButtonClicked(user)}">
+                            </h:commandLink>
+                        </h:column>
+
+                        <h:column>
+                            <h:commandLink value="delete"
+                                           action="#{settingsPageController.deleteUserButtonClicked(user)}"></h:commandLink>
+                        </h:column>
+
+                    </t:dataTable>
+                </div>
+
+            </div>
+        </h:form>
+
+    </div>
+</h:body>
+</html>
